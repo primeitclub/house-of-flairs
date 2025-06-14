@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
+import Header from '@/components/Header'; // or adjust based on your project
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -14,7 +14,7 @@ const ItemDetails = () => {
     const lostItems = JSON.parse(localStorage.getItem('lostItems') || '[]');
     const foundItems = JSON.parse(localStorage.getItem('foundItems') || '[]');
     const allItems = [...lostItems, ...foundItems];
-    const foundItem = allItems.find(item => item.id === id);
+    const foundItem = allItems.find((item) => item.id === id || item.id === Number(id));
 
     setItem(foundItem || null);
     setLoading(false);
@@ -39,10 +39,10 @@ const ItemDetails = () => {
             The item you're looking for doesn't exist or may have been removed.
           </p>
           <button
-            onClick={() => navigate('/browse')}
+            onClick={() => navigate('/')}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            Browse All Items
+            Go to Home
           </button>
         </div>
       </div>
@@ -62,6 +62,15 @@ const ItemDetails = () => {
         </button>
 
         <div className="bg-white shadow rounded p-6">
+          {/* Image */}
+          {item.imageUrl && (
+            <img
+              src={item.imageUrl}
+              alt={item.itemName}
+              className="w-full h-64 object-cover rounded mb-4"
+            />
+          )}
+
           <div className="flex justify-between items-center mb-4">
             <span className={`px-3 py-1 rounded text-sm font-semibold ${
               item.type === 'lost'
@@ -89,7 +98,7 @@ const ItemDetails = () => {
               <p className="text-sm font-medium text-gray-900">
                 {item.type === 'lost' ? 'Date Lost' : 'Date Found'}
               </p>
-              <p className="text-gray-600">{new Date(item.date).toLocaleDateString()}</p>
+              <p className="text-gray-600">{item.date}</p>
             </div>
           </div>
 
@@ -106,7 +115,7 @@ const ItemDetails = () => {
               <div className="bg-blue-50 p-4 rounded">
                 <p className="text-sm font-medium text-gray-900">Email</p>
                 <a
-                  href={`mailto:${item.contactEmail}?subject=${item.type === 'lost' ? 'Found' : 'About'} your ${item.itemName}`}
+                  href={`mailto:${item.contactEmail}?subject=Regarding ${item.itemName}`}
                   className="text-blue-600 hover:underline"
                 >
                   {item.contactEmail}
@@ -129,7 +138,7 @@ const ItemDetails = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <a
-              href={`mailto:${item.contactEmail}?subject=${item.type === 'lost' ? 'Found' : 'About'} your ${item.itemName}`}
+              href={`mailto:${item.contactEmail}?subject=Regarding ${item.itemName}`}
               className="bg-blue-600 text-white text-center px-4 py-2 rounded hover:bg-blue-700 flex-1"
             >
               Send Email
