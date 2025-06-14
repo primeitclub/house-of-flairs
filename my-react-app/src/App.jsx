@@ -11,8 +11,8 @@ import ReportLost from "./pages/ReportLost";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import LowerHalf from "./components/LowerHalf";
-// import ReportFound from "./pages/ReportFound";
-
+import ReportFound from "./pages/ReportFound";
+import SearchItem from "./pages/SearchItem";
 function App() {
 
   return (
@@ -26,7 +26,7 @@ function App() {
         <Hero />
         <LowerHalf/>
         <Filter />
-       
+       <About/>
         <Insights />
        
         <Commission />
@@ -35,8 +35,10 @@ function App() {
       </>
     } />
     <Route path="/report-lost" element={<ReportLost />} />
-    <Route path="/about" element={<About/>}/>
-    {/* <Route path="/report-found" element ={<ReportFound/>}/> */}
+    
+    <Route path="/report-found" element ={<ReportFound/>}/>
+    <Route path="/search-item" element = {<SearchItem/>}/>
+    <Route path="/items/:id" element={<ItemDetails />} />
   </Routes>
 </BrowserRouter>
 

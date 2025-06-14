@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import NavBar from '../components/navbar'; // Commented out due to resolution error
+import NavBar from '../components/navbar';
 
 const ReportFound = () => {
   const [formData, setFormData] = useState({
@@ -12,16 +12,15 @@ const ReportFound = () => {
     contactName: '',
     contactEmail: '',
     contactPhone: '',
-    category: '', // Added category to form data
+    category: '',
   });
-  const [image, setImage] = useState(null); // State for image file
-  const [errors, setErrors] = useState({}); // State for validation errors
-  const [loading, setLoading] = useState(false); // State for loading during submission
+  const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear the error for the field being changed
     setErrors({ ...errors, [e.target.name]: '' });
   };
 
@@ -41,7 +40,7 @@ const ReportFound = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.contactEmail)) {
       newErrors.contactEmail = 'Invalid email format';
     }
-    if (!formData.category) newErrors.category = 'Category is required'; // Validation for category
+    if (!formData.category) newErrors.category = 'Category is required';
     return newErrors;
   };
 
@@ -64,17 +63,12 @@ const ReportFound = () => {
 
     setLoading(true);
     try {
-      // NOTE: Replace 'https://your-api-endpoint.com/found-items' with your actual API endpoint.
-      // This is a placeholder.
       const res = await axios.post('https://your-api-endpoint.com/found-items', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      // In a real application, you might want to show a success message before navigating
       navigate(`/item/${res.data.id}`);
     } catch (err) {
       console.error("Submission error:", err);
-      // Log the error for debugging. Avoid using `alert()` in Canvas applications.
-      console.log('Error submitting form. Please check the console for details.');
     } finally {
       setLoading(false);
     }
@@ -82,16 +76,13 @@ const ReportFound = () => {
 
   return (
     <>
-      {/* NavBar component was commented out due to a resolution error. */}
-      {/* If you have a NavBar component, ensure its path is correct or define it in this file. */}
-      {/* <NavBar /> */}
+      <NavBar />
 
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-6 font-inter">
+      <div className="min-h-screen bg-[#EDFFD3] mt-30 flex items-center justify-center p-6 font-inter">
         <div className="w-full max-w-2xl bg-white shadow-xl rounded-xl p-8">
           <h2 className="text-3xl font-bold text-green-700 text-center mb-6">Report Found Item</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Category Select */}
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category *</label>
               <select
@@ -118,7 +109,6 @@ const ReportFound = () => {
               {errors.category && <p className="text-green-600 text-xs mt-1">{errors.category}</p>}
             </div>
 
-            {/* Item Name */}
             <div>
               <label htmlFor="itemName" className="block text-sm font-medium text-gray-700">Item Name *</label>
               <input
@@ -127,13 +117,11 @@ const ReportFound = () => {
                 name="itemName"
                 value={formData.itemName}
                 onChange={handleChange}
-                placeholder="e.g., iPhone 12"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
               />
               {errors.itemName && <p className="text-green-600 text-xs mt-1">{errors.itemName}</p>}
             </div>
 
-            {/* Date Found */}
             <div>
               <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date Found *</label>
               <input
@@ -147,7 +135,6 @@ const ReportFound = () => {
               {errors.date && <p className="text-green-600 text-xs mt-1">{errors.date}</p>}
             </div>
 
-            {/* Description */}
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description *</label>
               <textarea
@@ -156,13 +143,11 @@ const ReportFound = () => {
                 value={formData.description}
                 onChange={handleChange}
                 rows="4"
-                placeholder="Describe the item in detail (e.g., color, brand, condition, any distinctive features)"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 resize-y"
               ></textarea>
               {errors.description && <p className="text-green-600 text-xs mt-1">{errors.description}</p>}
             </div>
 
-            {/* Location Found */}
             <div>
               <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location Found *</label>
               <input
@@ -171,13 +156,11 @@ const ReportFound = () => {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                placeholder="e.g., Central Park bench, Main Street Coffee Shop, Downtown Mall parking lot"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
               />
               {errors.location && <p className="text-green-600 text-xs mt-1">{errors.location}</p>}
             </div>
 
-            {/* Contact Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="contactName" className="block text-sm font-medium text-gray-700">Your Name *</label>
@@ -187,7 +170,6 @@ const ReportFound = () => {
                   name="contactName"
                   value={formData.contactName}
                   onChange={handleChange}
-                  placeholder="Full name"
                   className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                 />
                 {errors.contactName && <p className="text-green-600 text-xs mt-1">{errors.contactName}</p>}
@@ -200,14 +182,12 @@ const ReportFound = () => {
                   name="contactEmail"
                   value={formData.contactEmail}
                   onChange={handleChange}
-                  placeholder="your.email@example.com"
                   className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                 />
                 {errors.contactEmail && <p className="text-green-600 text-xs mt-1">{errors.contactEmail}</p>}
               </div>
             </div>
 
-            {/* Phone */}
             <div>
               <label htmlFor="contactPhone" className="block text-sm font-medium text-gray-700">Phone Number (Optional)</label>
               <input
@@ -216,12 +196,10 @@ const ReportFound = () => {
                 name="contactPhone"
                 value={formData.contactPhone}
                 onChange={handleChange}
-                placeholder="(555) 123-4567"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
               />
             </div>
 
-            {/* Image Upload */}
             <div>
               <label htmlFor="imageUpload" className="block text-sm font-medium text-gray-700">Upload Image (optional)</label>
               <input
@@ -245,7 +223,6 @@ const ReportFound = () => {
               )}
             </div>
 
-            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <button
                 type="submit"

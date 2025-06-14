@@ -13,9 +13,9 @@ function NavBar() {
           </Link>
         </li>
         <li className="hover:underline hover:text-[#476930] cursor-pointer">
-            
+            <Link to="/search-item">
             Search Items
-            
+            </Link> 
             </li>
         <li className="hover:underline hover:text-[#476930] cursor-pointer">Found report</li>
         <li className="hover:underline hover:text-[#476930] cursor-pointer">
