@@ -1,6 +1,6 @@
 export default function Footer(){
     return(
-        <footer className="w-screen pl-20 pr-20 pb-10 pt-10 bg-[#476930] ">
+        <footer id="footer" className="w-screen pl-20 pr-20 pb-10 pt-10 bg-[#476930] ">
             <div>
                 <div className="flex justify-start items-center gap-5 pb-5 border-b-1 border-white ">
                     <p className="w-[70px] h-[60px] text-5xl bg-white rounded-[10px] text-black flex justify-center items-center">
