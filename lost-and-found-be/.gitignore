@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and OS generated files
+.DS_Store
+.vscode/ # Optional: ignore VS Code settings. Remove if sharing workspace settings.
