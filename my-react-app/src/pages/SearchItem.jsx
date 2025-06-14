@@ -6,17 +6,17 @@ import Footer from "../components/Footer";
 
 const categories = [
   "All",
-  "Vehicle",
-  "Keys",
-  "atm",
-  "docs",
-  "wallets",
+  "Vehicles",
   "Personal Items",
-  "sports",
-  "clothes",
+  "Clothes",
   "Backpacks",
-  "Tools & Utilities",
-  "Instrument",
+  "Wallets",
+  "Keys",
+  "ATM",
+  "Instruments",
+  "Sports",
+  "Tools",
+  "Documents",
   "Others",
 ];
 
@@ -32,25 +32,31 @@ function SearchItem() {
     async function fetchItems() {
       try {
         setLoading(true);
-        const response = await axios.get("https://your-api-endpoint.com/found-items");
-        setItems(response.data);
+        const [foundRes, lostRes] = await Promise.all([
+          axios.get('http://localhost:5000/api/found-items'),
+          axios.get('http://localhost:5000/api/lost-items')
+        ]);
+        // Add a type to each item for display
+        const foundItems = foundRes.data.map(item => ({ ...item, type: 'found' }));
+        const lostItems = lostRes.data.map(item => ({ ...item, type: 'lost' }));
+        setItems([...foundItems, ...lostItems]);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch items.");
+        setError('Failed to fetch items.');
         setLoading(false);
       }
     }
-
     fetchItems();
   }, []);
 
   useEffect(() => {
     const filtered =
-      selectedCategory.toLowerCase() === "all"
+      selectedCategory === "All"
         ? items
         : items.filter(
             (item) =>
-              item.category.toLowerCase() === selectedCategory.toLowerCase()
+              item.category &&
+              item.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
           );
     setFilteredItems(filtered);
   }, [selectedCategory, items]);
@@ -120,11 +126,11 @@ function SearchItem() {
             ) : (
               filteredItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col"
                 >
                   <img
-                    src={item.imageUrl}
+                    src={item.image ? `http://localhost:5000${item.image}` : '/placeholder.png'}
                     alt={item.itemName}
                     className="rounded-lg h-40 object-cover mb-3"
                   />
@@ -133,13 +139,13 @@ function SearchItem() {
                     Location: {item.location}
                   </span>
                   <span className="text-sm text-gray-600 mb-2">
-                    Found Date: {item.date}
+                    {item.type === 'found' ? 'Found Date' : 'Lost Date'}: {new Date(item.date).toLocaleDateString()}
                   </span>
-                  <span className="inline-block text-xs px-2 py-1 bg-red-200 text-red-800 rounded-full w-fit mb-3">
+                  <span className={`inline-block text-xs px-2 py-1 rounded-full w-fit mb-3 ${item.type === 'found' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
                     {item.category}
                   </span>
                   <button
-                    onClick={() => navigate(`/items/${item.id}`)}
+                    onClick={() => navigate(`/items/${item.type}/${item._id}`)}
                     className="mt-auto bg-[#86B049] hover:bg-[#476930] cursor-pointer text-white px-4 py-2 rounded-md font-medium"
                   >
                     Alert Finder

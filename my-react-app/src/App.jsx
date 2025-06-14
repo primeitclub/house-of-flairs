@@ -38,7 +38,7 @@ function App() {
     <Route path="/report-lost" element={<ReportLost />} />
     <Route path="/report-found" element ={<ReportFound/>}/>
     <Route path="/search-item" element = {<SearchItem/>}/>
-    <Route path="/items/:id" element={<ItemDetails />} />
+    <Route path="/items/:type/:id" element={<ItemDetails />} />
   </Routes>
 </BrowserRouter>
 

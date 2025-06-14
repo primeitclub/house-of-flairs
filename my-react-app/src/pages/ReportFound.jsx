@@ -63,10 +63,10 @@ const ReportFound = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post('https://your-api-endpoint.com/found-items', data, {
+      const res = await axios.post('http://localhost:5000/api/found-items', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      navigate(`/item/${res.data.id}`);
+      navigate('/');
     } catch (err) {
       console.error("Submission error:", err);
     } finally {

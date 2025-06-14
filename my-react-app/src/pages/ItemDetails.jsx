@@ -5,20 +5,21 @@ import NavBar from '../components/navbar';
 import Footer from '../components/Footer';
 
 const ItemDetails = () => {
-  const { id } = useParams();
+  const { type, id } = useParams();
   const navigate = useNavigate();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !type) return;
 
     async function fetchItem() {
       try {
         setLoading(true);
-        const response = await axios.get(`https://your-api-endpoint.com/found-items/${id}`);
-        setItem(response.data);
+        const endpoint = type === 'lost' ? 'lost-items' : 'found-items';
+        const response = await axios.get(`http://localhost:5000/api/${endpoint}/${id}`);
+        setItem({ ...response.data, type });
       } catch (err) {
         setError('Item not found or failed to load.');
       } finally {
@@ -27,7 +28,7 @@ const ItemDetails = () => {
     }
 
     fetchItem();
-  }, [id]);
+  }, [id, type]);
 
   if (loading) {
     return (
@@ -65,9 +66,9 @@ const ItemDetails = () => {
           </button>
 
           <div className="bg-white shadow rounded p-6">
-            {item.imageUrl && (
+            {item.image && (
               <img
-                src={item.imageUrl}
+                src={`http://localhost:5000${item.image}`}
                 alt={item.itemName}
                 className="w-full h-64 object-cover rounded mb-4"
               />
