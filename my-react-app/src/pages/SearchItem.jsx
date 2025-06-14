@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/navbar";
 import Footer from "../components/Footer";
+import girlImg from "../assets/bag.png";
 
 const dummyItems = [
   {
@@ -16,7 +17,7 @@ const dummyItems = [
     contactPhone: "9800000000",
     createdAt: new Date().toISOString(),
     type: "found",
-    imageUrl: "https://via.placeholder.com/200x120?text=Tata+Model",
+    imageUrl: girlImg,
   },
   {
     id: "2",
@@ -71,9 +72,11 @@ function SearchItem() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Save dummyItems to localStorage
-    localStorage.setItem('foundItems', JSON.stringify(dummyItems));
-    setItems(dummyItems);
+    const saved = localStorage.getItem('foundItems');
+    if (!saved) {
+      localStorage.setItem('foundItems', JSON.stringify(dummyItems));
+    }
+    setItems(JSON.parse(localStorage.getItem('foundItems')));
   }, []);
 
   useEffect(() => {
@@ -90,7 +93,7 @@ function SearchItem() {
   return (
     <>
       <NavBar />
-      <div className="min-h-screen bg-lime-50 p-4 md:p-8">
+      <div className="min-h-screen mt-30 bg-lime-50 p-4 md:p-8">
         <h2 className="text-2xl md:text-3xl font-semibold text-center mb-2 text-gray-800">
           Search your belonging
         </h2>
@@ -99,7 +102,6 @@ function SearchItem() {
         </p>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Sidebar */}
           <div className="md:w-1/4">
             <div className="bg-white rounded-xl shadow p-4">
               <h3 className="text-lg font-medium mb-4">Category</h3>
@@ -121,7 +123,6 @@ function SearchItem() {
             </div>
           </div>
 
-          {/* Card List */}
           <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item) => (
               <div
@@ -145,7 +146,7 @@ function SearchItem() {
                 </span>
                 <button
                   onClick={() => navigate(`/items/${item.id}`)}
-                  className="mt-auto bg-[#86B049] hover:bg-[#476930] text-white px-4 py-2 rounded-md font-medium"
+                  className="mt-auto bg-[#86B049] hover:bg-[#476930] cursor-pointer text-white px-4 py-2 rounded-md font-medium"
                 >
                   Alert Finder
                 </button>

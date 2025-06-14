@@ -2,7 +2,7 @@ import aboutImg from "../assets/about-Img.png";
 
 function About() {
   return (
-    <div id = "about" className=" bg-[#EDFFD3] flex items-center justify-center py-20">
+    <div id="about" className=" bg-[#EDFFD3] flex items-center justify-center py-20">
       <div className="bg-white  shadow-xl pt-30  pr-35  pl-15 mr-30 pb-20  w-full flex  rounded-tr-7xl rounded-br-2xl items-center justify-center gap-8 lg:gap-30">
         
         <div className="w-1.2 flex justify-center items-center">

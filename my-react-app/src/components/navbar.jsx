@@ -17,10 +17,10 @@ function NavBar() {
             Search Items
             </Link> 
             </li>
-        <li className="hover:underline hover:text-[#476930] cursor-pointer">Found report</li>
+ 
         <li className="hover:underline hover:text-[#476930] cursor-pointer">
             
-            <Link to="/#about" className="hover:underline hover:text-[#476930] cursor-pointer">
+            <Link to="#about" className="hover:underline hover:text-[#476930] cursor-pointer">
             About us
             </Link>
             </li>

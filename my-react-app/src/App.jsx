@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import LowerHalf from "./components/LowerHalf";
 import ReportFound from "./pages/ReportFound";
 import SearchItem from "./pages/SearchItem";
+import ItemDetails from "./pages/ItemDetails";
 function App() {
 
   return (
@@ -35,7 +36,6 @@ function App() {
       </>
     } />
     <Route path="/report-lost" element={<ReportLost />} />
-    
     <Route path="/report-found" element ={<ReportFound/>}/>
     <Route path="/search-item" element = {<SearchItem/>}/>
     <Route path="/items/:id" element={<ItemDetails />} />
