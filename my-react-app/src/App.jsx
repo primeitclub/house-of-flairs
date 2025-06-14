@@ -4,7 +4,9 @@ import NavBar from "./components/navbar";
 import Hero from "./components/Hero";
 
 import Filter from "./components/filter";
-import About from "./components/About";
+import About from "./components/about";
+import Insights from "./components/insights";
+import Commission from "./components/comission";
 function App() {
 
   return (
@@ -13,6 +15,8 @@ function App() {
       <Hero/>
       <Filter/>
       <About/>
+      <Insights/>
+      <Commission/>
     </div>
   );
 }

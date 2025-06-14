@@ -1,7 +1,7 @@
 import GirlImage from "../assets/girl.png";
 function Hero(){
 return(
-<section className="flex flex-col md:flex-row items-center justify-between px-10 md:px-20 py-12 mt-20 flex-grow h-[calc(100vh-96px)]">
+<section className="flex flex-col md:flex-row items-center bg-gradient-to-b from-[#EEFFD6] to-[#FFFFFE] justify-between px-10 md:px-20 py-12 mt-20 flex-grow h-[calc(100vh-96px)]">
         {/* Text Content */}
         <div className="max-w-xl">
           <h1 className="text-4xlfont md:text-5xl font-bold text-gray-900 mb-6 leading-snug">

@@ -2,10 +2,10 @@ import aboutImg from "../assets/about-Img.png";
 
 function About() {
   return (
-    <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-xl p-8 max-w-6xl w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+    <div className=" bg-[#EDFFD3] flex items-center justify-center py-20">
+      <div className="bg-white  shadow-xl pt-30  pr-35  pl-15 mr-30 pb-20  w-full flex  rounded-tr-7xl rounded-br-2xl items-center justify-center gap-8 lg:gap-30">
         
-        <div className="lg:w-1/2 flex justify-center items-center">
+        <div className="w-1.2 flex justify-center items-center">
         
           <img
             src={aboutImg}
@@ -16,8 +16,8 @@ function About() {
         </div>
 
       
-        <div className="lg:w-1/2 text-center lg:text-left">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6 font-inter">About <span className="text-green-600">Vetayo</span></h2>
+        <div className="lg:w-[45%] ">
+          <h2 className="text-4xl font-bold text-gray-800 mb-6 font-inter">About <span className="text-[#86B049]">Vetayo</span></h2>
           <p className="text-gray-700 leading-relaxed mb-6 font-inter">
             Vetayo is a digital lost & found service designed for real life. Whether you lost something in a mall, park, office, gym, or anywhere else, Vetayo helps connect you to the person who found it or vice versa.
           </p>
@@ -39,7 +39,10 @@ function About() {
               Secure Claim System
             </div>
             <div className="flex items-center text-gray-700">
+               
               <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+
+               
               Fast, Simple, and Effective
             </div>
           </div>

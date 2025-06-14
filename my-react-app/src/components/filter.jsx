@@ -28,29 +28,23 @@ const categories = [
 
 export default function Filter() {
   return (
-      <div className="text-center py-12 bg-white">
+    <div className="text-center py-12 bg-white">
       <h2 className="text-3xl font-bold mb-2">Filter lost items</h2>
-      <p className="text-gray-600 mb-10 max-w-xl mx-auto">
-        Easily narrow down lost items by category, location, or date so you can find what you're looking for, faster.
+      <p className="text-gray-600 mb-10 max-w-md mx-auto">
+        Easily narrow down lost items by category, location, or date so you can
+        find what you're looking for, faster.
       </p>
-      <div className="grid lg:grid-cols-6 gap-6 px-4 md:px-10">
+      <div className="grid lg:grid-cols-6 gap-6  px-10">
         {categories.map((cat, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-xl shadow-md  w-[70%] py-9 hover:shadow-lg transition flex flex-col justify-between items-center cursor-pointer"
-            >
-              <img
-                src={cat.icon}
-               
-                className="w-12 h-12 object-contain"
-              />
-              <div className="font-semibold text-gray-900">{cat.name}</div>
-            </div>
-          ))}
-        </div>
-      
+          <div
+            key={idx}
+            className="bg-white rounded-xl shadow-md  w-[99%] py-15 hover:shadow-lg transition flex flex-col justify-between items-center cursor-pointer"
+          >
+            <img src={cat.icon} className="w-16 h-16 object-contain" />
+            <div className="font-bold mt-5 text-gray-900">{cat.name}</div>
+          </div>
+        ))}
       </div>
-
-
+    </div>
   );
 }
