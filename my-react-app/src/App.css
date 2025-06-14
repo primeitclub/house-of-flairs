@@ -1,12 +1,31 @@
-#root{
-    height: 100vh;
-    width: 100vw;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* 👇 Set up your root layout */
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* 👇 Register the Montserrat font */
+@font-face {
+  font-family: "Montserrat";
+  src: url("../src/assets/fonts/Montserrat-Regular.ttf");
 }
 @font-face {
-    font-family: "Montserrat";
-    src: url(../src/assets/fonts/Montserrat-Regular.ttf);
+    font-family: "DM Serif Display";
+    src: url("../src/assets/fonts/DM_Serif_Display/DMSerifDisplay-Regular.ttf");
 }
-@theme{
-    --font-montserrat: montserrat, "sans-serif"
+
+html {
+font-family: 'Montserrat', sans-serif;
+font-family: "DM Serif Display", serif;
 }
-@import "tailwindcss";
+
+/* ✅ Tailwind base layer override for all <a> tags */
+@layer base {
+  a {
+    @apply text-white visited:text-white no-underline hover:underline;
+  }
+}
