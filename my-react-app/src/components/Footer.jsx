@@ -35,7 +35,7 @@ export default function Footer(){
 
                     <div>
                         <p className="font-semibold mb-2 text-white text-[.95rem]">Terms</p>
-                        <a href="#" className="block text-white text-[.75rem] font-light">Faqs</a>
+                        <a href="#" className="block text-white text-[.75rem] font-light">FAQs</a>
                         <a href="#" className="block text-white text-[.75rem] font-light">Documents</a>
                         <a href="#" className="block text-white text-[.75rem] font-light">Policy</a>
                     </div>
