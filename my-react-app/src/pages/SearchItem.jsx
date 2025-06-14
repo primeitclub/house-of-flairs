@@ -21,7 +21,8 @@ const categories = [
 ];
 
 function SearchItem() {
-  const [selectedCategory, setSelectedCategory] = useState("Vehicle");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,16 +51,22 @@ function SearchItem() {
   }, []);
 
   useEffect(() => {
-    const filtered =
-      selectedCategory === "All"
-        ? items
-        : items.filter(
-            (item) =>
-              item.category &&
-              item.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
-          );
+    let filtered = selectedCategory === "All"
+      ? items
+      : items.filter(
+          (item) =>
+            item.category &&
+            item.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
+        );
+    if (searchTerm.trim() !== "") {
+      filtered = filtered.filter(
+        (item) =>
+          item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
     setFilteredItems(filtered);
-  }, [selectedCategory, items]);
+  }, [selectedCategory, items, searchTerm]);
 
   if (loading) {
     return (
@@ -98,7 +105,7 @@ function SearchItem() {
 
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/4">
-            <div className="bg-white rounded-xl shadow p-4">
+            <div className="bg-white rounded-xl shadow p-4 mb-6 md:mb-0">
               <h3 className="text-lg font-medium mb-4">Category</h3>
               <ul>
                 {categories.map((cat) => (
@@ -118,41 +125,52 @@ function SearchItem() {
             </div>
           </div>
 
-          <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.length === 0 ? (
-              <p className="col-span-full text-center text-gray-500">
-                No items found in this category.
-              </p>
-            ) : (
-              filteredItems.map((item) => (
-                <div
-                  key={item._id}
-                  className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col"
-                >
-                  <img
-                    src={item.image ? `http://localhost:5000${item.image}` : '/placeholder.png'}
-                    alt={item.itemName}
-                    className="rounded-lg h-40 object-cover mb-3"
-                  />
-                  <h4 className="text-lg font-semibold">{item.itemName}</h4>
-                  <span className="text-sm text-gray-600">
-                    Location: {item.location}
-                  </span>
-                  <span className="text-sm text-gray-600 mb-2">
-                    {item.type === 'found' ? 'Found Date' : 'Lost Date'}: {new Date(item.date).toLocaleDateString()}
-                  </span>
-                  <span className={`inline-block text-xs px-2 py-1 rounded-full w-fit mb-3 ${item.type === 'found' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
-                    {item.category}
-                  </span>
-                  <button
-                    onClick={() => navigate(`/items/${item.type}/${item._id}`)}
-                    className="mt-auto bg-[#86B049] hover:bg-[#476930] cursor-pointer text-white px-4 py-2 rounded-md font-medium"
+          <div className="md:w-3/4">
+            <div className="mb-6 flex justify-center">
+              <input
+                type="text"
+                placeholder="Search by name or description..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.length === 0 ? (
+                <p className="col-span-full text-center text-gray-500">
+                  No items found in this category.
+                </p>
+              ) : (
+                filteredItems.map((item) => (
+                  <div
+                    key={item._id}
+                    className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col"
                   >
-                    Alert Finder
-                  </button>
-                </div>
-              ))
-            )}
+                    <img
+                      src={item.image ? `http://localhost:5000${item.image}` : '/placeholder.png'}
+                      alt={item.itemName}
+                      className="rounded-lg h-40 object-cover mb-3"
+                    />
+                    <h4 className="text-lg font-semibold">{item.itemName}</h4>
+                    <span className="text-sm text-gray-600">
+                      Location: {item.location}
+                    </span>
+                    <span className="text-sm text-gray-600 mb-2">
+                      {item.type === 'found' ? 'Found Date' : 'Lost Date'}: {new Date(item.date).toLocaleDateString()}
+                    </span>
+                    <span className={`inline-block text-xs px-2 py-1 rounded-full w-fit mb-3 ${item.type === 'found' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
+                      {item.category}
+                    </span>
+                    <button
+                      onClick={() => navigate(`/items/${item.type}/${item._id}`)}
+                      className="mt-auto bg-[#86B049] hover:bg-[#476930] cursor-pointer text-white px-4 py-2 rounded-md font-medium"
+                    >
+                      Alert Finder
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>

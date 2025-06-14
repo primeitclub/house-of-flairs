@@ -14,6 +14,8 @@ import LowerHalf from "./components/LowerHalf";
 import ReportFound from "./pages/ReportFound";
 import SearchItem from "./pages/SearchItem";
 import ItemDetails from "./pages/ItemDetails";
+import Dashboard from "./pages/Dashboard";
+
 function App() {
 
   return (
@@ -39,6 +41,7 @@ function App() {
     <Route path="/report-found" element ={<ReportFound/>}/>
     <Route path="/search-item" element = {<SearchItem/>}/>
     <Route path="/items/:type/:id" element={<ItemDetails />} />
+    <Route path="/dashboard" element={<Dashboard />} />
   </Routes>
 </BrowserRouter>
 

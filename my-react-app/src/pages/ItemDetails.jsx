@@ -123,17 +123,6 @@ const ItemDetails = () => {
                     {item.contactEmail}
                   </a>
                 </div>
-                {item.contactPhone && (
-                  <div className="bg-green-50 p-4 rounded">
-                    <p className="text-sm font-medium text-green-900">Phone</p>
-                    <a
-                      href={`tel:${item.contactPhone}`}
-                      className="text-green-600 hover:underline"
-                    >
-                      {item.contactPhone}
-                    </a>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -144,19 +133,48 @@ const ItemDetails = () => {
               >
                 Send Email
               </a>
-              {item.contactPhone && (
-                <a
-                  href={`tel:${item.contactPhone}`}
-                  className="border border-green-600 text-green-600 text-center px-4 py-2 rounded hover:bg-green-50 flex-1"
-                >
-                  Call
-                </a>
-              )}
             </div>
 
             <div className="bg-yellow-50 border border-yellow-200 rounded p-4 text-sm text-yellow-800">
               <strong>Safety Tip:</strong> When meeting to exchange items, choose a public location
               and consider bringing a friend. Always verify the item's details before the meeting.
+            </div>
+
+            {/* Evidence Submission Section */}
+            <div className="mt-10">
+              <h2 className="text-xl font-semibold mb-4 text-green-900">Evidence Submission</h2>
+              <form
+                className="space-y-4"
+                onSubmit={e => {
+                  e.preventDefault();
+                  alert('Evidence submitted! (This is a demo. Backend integration needed for real upload.)');
+                }}
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Upload Evidence (Bills, photos that signify it's your belonging)
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Description (why this is your item)</label>
+                  <textarea
+                    rows="3"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                    placeholder="Describe any unique marks, purchase details, or other evidence..."
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="bg-[#86B049] hover:bg-[#476930] text-white px-6 py-2 rounded-lg font-medium shadow-md transition duration-200"
+                >
+                  Submit Evidence
+                </button>
+              </form>
             </div>
           </div>
         </div>

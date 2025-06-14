@@ -38,9 +38,11 @@ function NavBar() {
           </a>
         </li>
       </ul>
-      <button className="bg-[#86B049] hover:bg-[#476930] text-white px-6 py-2 rounded-lg font-medium mr-10">
-        Get started
-      </button>
+      <Link to="/dashboard">
+        <button className="bg-gradient-to-r from-[#86B049] to-[#476930] hover:from-[#476930] hover:to-[#86B049] text-white px-6 py-2 rounded-lg font-medium mr-10 shadow-md transition duration-200 cursor-pointer">
+          Dashboard
+        </button>
+      </Link>
     </nav>
   );
 }
