@@ -1,1 +1,12 @@
+#root{
+    height: 100vh;
+    width: 100vw;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url(../src/assets/fonts/Montserrat-Regular.ttf);
+}
+@theme{
+    --font-montserrat: montserrat, "sans-serif"
+}
 @import "tailwindcss";
