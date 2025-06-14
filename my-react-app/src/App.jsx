@@ -9,6 +9,8 @@ import Insights from "./components/insights";
 import Commission from "./components/comission";
 import ReportLost from "./pages/ReportLost";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Footer from "./components/Footer";
+import LowerHalf from "./components/LowerHalf";
 // import ReportFound from "./pages/ReportFound";
 
 function App() {
@@ -22,10 +24,14 @@ function App() {
       <>
         <NavBar />
         <Hero />
+        <LowerHalf/>
         <Filter />
        
         <Insights />
+       
         <Commission />
+     <Footer/>
+      
       </>
     } />
     <Route path="/report-lost" element={<ReportLost />} />
