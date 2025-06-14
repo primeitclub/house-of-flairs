@@ -1,53 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import NavBar from "../components/navbar";
 import Footer from "../components/Footer";
-import girlImg from "../assets/bag.png";
-
-const dummyItems = [
-  {
-    id: "1",
-    itemName: "Tata model 3",
-    description: "Silver color, found near Kalanki",
-    location: "Kathmandu",
-    date: "2060/03/34",
-    category: "Vehicle",
-    contactName: "Ram",
-    contactEmail: "ram@example.com",
-    contactPhone: "9800000000",
-    createdAt: new Date().toISOString(),
-    type: "found",
-    imageUrl: girlImg,
-  },
-  {
-    id: "2",
-    itemName: "Splendor Hero",
-    description: "Black bike with scratches",
-    location: "Kathmandu",
-    date: "2060/03/34",
-    category: "Vehicle",
-    contactName: "Shyam",
-    contactEmail: "shyam@example.com",
-    contactPhone: "9811111111",
-    createdAt: new Date().toISOString(),
-    type: "found",
-    imageUrl: "https://via.placeholder.com/200x120?text=Splendor+Hero",
-  },
-  {
-    id: "3",
-    itemName: "Splendor",
-    description: "White scooter parked roadside",
-    location: "Kathmandu",
-    date: "2060/03/34",
-    category: "Vehicle",
-    contactName: "Hari",
-    contactEmail: "hari@example.com",
-    contactPhone: "9822222222",
-    createdAt: new Date().toISOString(),
-    type: "found",
-    imageUrl: "https://via.placeholder.com/200x120?text=Splendor",
-  },
-];
 
 const categories = [
   "All",
@@ -62,21 +17,31 @@ const categories = [
   "Backpacks",
   "Tools & Utilities",
   "Instrument",
-  "Others"
+  "Others",
 ];
 
 function SearchItem() {
   const [selectedCategory, setSelectedCategory] = useState("Vehicle");
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = localStorage.getItem('foundItems');
-    if (!saved) {
-      localStorage.setItem('foundItems', JSON.stringify(dummyItems));
+    async function fetchItems() {
+      try {
+        setLoading(true);
+        const response = await axios.get("https://your-api-endpoint.com/found-items");
+        setItems(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch items.");
+        setLoading(false);
+      }
     }
-    setItems(JSON.parse(localStorage.getItem('foundItems')));
+
+    fetchItems();
   }, []);
 
   useEffect(() => {
@@ -89,6 +54,30 @@ function SearchItem() {
           );
     setFilteredItems(filtered);
   }, [selectedCategory, items]);
+
+  if (loading) {
+    return (
+      <>
+        <NavBar />
+        <div className="min-h-screen mt-30 flex justify-center items-center">
+          <p className="text-gray-600">Loading items...</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <NavBar />
+        <div className="min-h-screen mt-30 flex justify-center items-center">
+          <p className="text-red-600">{error}</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -124,34 +113,40 @@ function SearchItem() {
           </div>
 
           <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col"
-              >
-                <img
-                  src={item.imageUrl}
-                  alt={item.itemName}
-                  className="rounded-lg h-40 object-cover mb-3"
-                />
-                <h4 className="text-lg font-semibold">{item.itemName}</h4>
-                <span className="text-sm text-gray-600">
-                  Location: {item.location}
-                </span>
-                <span className="text-sm text-gray-600 mb-2">
-                  Found Date: {item.date}
-                </span>
-                <span className="inline-block text-xs px-2 py-1 bg-red-200 text-red-800 rounded-full w-fit mb-3">
-                  {item.category}
-                </span>
-                <button
-                  onClick={() => navigate(`/items/${item.id}`)}
-                  className="mt-auto bg-[#86B049] hover:bg-[#476930] cursor-pointer text-white px-4 py-2 rounded-md font-medium"
+            {filteredItems.length === 0 ? (
+              <p className="col-span-full text-center text-gray-500">
+                No items found in this category.
+              </p>
+            ) : (
+              filteredItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col"
                 >
-                  Alert Finder
-                </button>
-              </div>
-            ))}
+                  <img
+                    src={item.imageUrl}
+                    alt={item.itemName}
+                    className="rounded-lg h-40 object-cover mb-3"
+                  />
+                  <h4 className="text-lg font-semibold">{item.itemName}</h4>
+                  <span className="text-sm text-gray-600">
+                    Location: {item.location}
+                  </span>
+                  <span className="text-sm text-gray-600 mb-2">
+                    Found Date: {item.date}
+                  </span>
+                  <span className="inline-block text-xs px-2 py-1 bg-red-200 text-red-800 rounded-full w-fit mb-3">
+                    {item.category}
+                  </span>
+                  <button
+                    onClick={() => navigate(`/items/${item.id}`)}
+                    className="mt-auto bg-[#86B049] hover:bg-[#476930] cursor-pointer text-white px-4 py-2 rounded-md font-medium"
+                  >
+                    Alert Finder
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
