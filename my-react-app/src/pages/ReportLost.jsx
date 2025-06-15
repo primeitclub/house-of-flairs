@@ -17,11 +17,13 @@ const ReportLost = () => {
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
+    setSubmitError('');
   };
 
   const handleImageChange = (e) => {
@@ -62,14 +64,19 @@ const ReportLost = () => {
     data.append('createdAt', new Date().toISOString());
 
     setLoading(true);
+    setSubmitError('');
     try {
       const res = await axios.post('http://localhost:5000/api/lost-items', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      navigate('/');
+      if (res.data) {
+        navigate('/');
+      } else {
+        throw new Error('No response from server');
+      }
     } catch (err) {
       console.error("Submission error:", err);
-    } finally {
+      setSubmitError(err.response?.data?.message || 'Failed to submit the form. Please try again.');
       setLoading(false);
     }
   };
@@ -83,6 +90,11 @@ const ReportLost = () => {
           <h2 className="text-3xl font-bold text-red-600 text-center mb-6">Report Lost Item</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {submitError && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span className="block sm:inline">{submitError}</span>
+              </div>
+            )}
 
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category *</label>
