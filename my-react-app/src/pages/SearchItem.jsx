@@ -7,25 +7,20 @@ import Footer from "../components/Footer";
 const categories = [
   "All",
   "Vehicles",
-  "Personal Items",
-  "Clothes",
-  "Backpacks",
-  "Wallets",
-  "Keys",
   "ATM",
-  "Instruments",
-  "Sports",
-  "Tools",
-  "Documents",
+  "Docs",
+  "Electronics",
   "Others",
 ];
 
 function SearchItem() {
-  const [selectedCategory, setSelectedCategory] = useState("Vehicle");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [itemType, setItemType] = useState("All");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,16 +45,21 @@ function SearchItem() {
   }, []);
 
   useEffect(() => {
-    const filtered =
-      selectedCategory === "All"
-        ? items
-        : items.filter(
-            (item) =>
-              item.category &&
-              item.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
-          );
+    let filtered = items;
+    if (itemType !== "All") {
+      filtered = filtered.filter(item => item.type === itemType);
+    }
+    if (selectedCategory !== "All") {
+      filtered = filtered.filter(item => item.category === selectedCategory);
+    }
+    if (searchTerm) {
+      filtered = filtered.filter(item =>
+        item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
     setFilteredItems(filtered);
-  }, [selectedCategory, items]);
+  }, [items, selectedCategory, searchTerm, itemType]);
 
   if (loading) {
     return (
@@ -88,51 +88,64 @@ function SearchItem() {
   return (
     <>
       <NavBar />
-      <div className="min-h-screen mt-30 bg-lime-50 p-4 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-2 text-gray-800">
-          Search your belonging
-        </h2>
-        <p className="text-center text-gray-500 mb-8">
-          Built to bring your lost items back—smart, secure, and stress-free.
-        </p>
-
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="md:w-1/4">
-            <div className="bg-white rounded-xl shadow p-4">
-              <h3 className="text-lg font-medium mb-4">Category</h3>
-              <ul>
-                {categories.map((cat) => (
-                  <li
-                    key={cat}
-                    className={`px-4 py-2 rounded cursor-pointer mb-1 ${
-                      selectedCategory === cat
-                        ? "bg-[#86B049] text-white font-semibold"
-                        : "hover:bg-gray-100 text-gray-700"
-                    }`}
-                    onClick={() => setSelectedCategory(cat)}
-                  >
-                    {cat}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      <div className="min-h-screen bg-gradient-to-b from-lime-100 to-white py-6 font-inter">
+        <div className="max-w-5xl mx-auto px-3">
+          <h2 className="text-3xl font-bold text-center mb-6 text-green-900">Search Items</h2>
+          <div className="flex flex-col md:flex-row gap-3 mb-4 items-center justify-center">
+            <input
+              type="text"
+              placeholder="Search by item name or description..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 bg-white"
+            />
+            <select
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
           </div>
-
-          <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.length === 0 ? (
-              <p className="col-span-full text-center text-gray-500">
-                No items found in this category.
-              </p>
+          <div className="flex justify-center gap-3 mb-6">
+            <button
+              className={`px-6 py-2 rounded-md font-semibold border transition-colors duration-200 ${itemType === 'found' ? 'bg-white text-green-700 border-green-300 hover:bg-green-50' : 'bg-white text-green-700 border-green-300 hover:bg-green-50'}`}
+              onClick={() => setItemType('found')}
+            >
+              View Found Items
+            </button>
+            <button
+              className={`px-6 py-2 rounded-md font-semibold border transition-colors duration-200 ${itemType === 'lost' ? 'bg-white text-red-700 border-red-300 hover:bg-red-50' : 'bg-white text-red-700 border-red-300 hover:bg-red-50'}`}
+              onClick={() => setItemType('lost')}
+            >
+              View Lost Items
+            </button>
+            <button
+              className={`px-6 py-2 rounded-md font-semibold border transition-colors duration-200 ${itemType === 'All' ? 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`}
+              onClick={() => setItemType('All')}
+            >
+              All
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {loading ? (
+              <div className="col-span-3 text-center text-lg">Loading...</div>
+            ) : error ? (
+              <div className="col-span-3 text-center text-red-600">{error}</div>
+            ) : filteredItems.length === 0 ? (
+              <div className="col-span-3 text-center text-gray-500">No items found.</div>
             ) : (
               filteredItems.map((item) => (
                 <div
                   key={item._id}
-                  className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col"
+                  className="bg-white rounded-xl shadow hover:shadow-md transition p-3 flex flex-col"
                 >
                   <img
                     src={item.image ? `http://localhost:5000${item.image}` : '/placeholder.png'}
                     alt={item.itemName}
-                    className="rounded-lg h-40 object-cover mb-3"
+                    className="rounded-lg h-40 object-cover mb-2"
                   />
                   <h4 className="text-lg font-semibold">{item.itemName}</h4>
                   <span className="text-sm text-gray-600">
@@ -141,22 +154,22 @@ function SearchItem() {
                   <span className="text-sm text-gray-600 mb-2">
                     {item.type === 'found' ? 'Found Date' : 'Lost Date'}: {new Date(item.date).toLocaleDateString()}
                   </span>
-                  <span className={`inline-block text-xs px-2 py-1 rounded-full w-fit mb-3 ${item.type === 'found' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
+                  <span className={`inline-block text-xs px-2 py-1 rounded-full w-fit mb-2 ${item.type === 'found' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
                     {item.category}
                   </span>
                   <button
                     onClick={() => navigate(`/items/${item.type}/${item._id}`)}
-                    className="mt-auto bg-[#86B049] hover:bg-[#476930] cursor-pointer text-white px-4 py-2 rounded-md font-medium"
+                    className="mt-auto bg-[#86B049] hover:bg-[#476930] text-white px-4 py-2 rounded-md font-medium cursor-pointer"
                   >
-                    Alert Finder
+                    {item.type === 'lost' ? 'Alert Owner' : 'Alert Finder'}
                   </button>
                 </div>
               ))
             )}
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }

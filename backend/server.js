@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
@@ -62,4 +63,48 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-}); 
+});
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+const verifyConnection = async () => {
+  try {
+    await transporter.verify();
+    console.log('Email configuration is valid.');
+  } catch (error) {
+    console.error('Email configuration error:', error);
+  }
+};
+
+verifyConnection();
+
+const sendEvidenceEmail = async (item, evidence) => {
+  const mailOptions = {
+    from: `"Lost and Found" <${process.env.EMAIL_USER}>`,
+    to: item.contactEmail,
+    subject: `New Evidence for ${item.itemName}`,
+    text: `New evidence has been submitted for your ${item.type} item: ${item.itemName}. Description: ${evidence.description}`,
+    html: `<p>New evidence has been submitted for your ${item.type} item: ${item.itemName}.</p><p>Description: ${evidence.description}</p>`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return true;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
+};
+
+module.exports = { sendEvidenceEmail }; 

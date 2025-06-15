@@ -90,12 +90,8 @@ const ReportLost = () => {
           <h2 className="text-3xl font-bold text-red-600 text-center mb-6">Report Lost Item</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {submitError && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <span className="block sm:inline">{submitError}</span>
-              </div>
-            )}
 
+            
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category *</label>
               <select
@@ -107,17 +103,10 @@ const ReportLost = () => {
               >
                 <option value="">Select category</option>
                 <option value="Vehicles">Vehicles</option>
-                <option value="Personal Items">Personal Items</option>
-                <option value="Clothes">Clothes</option>
-                <option value="Backpacks">Backpacks</option>
-                <option value="Wallets">Wallets</option>
-                <option value="Keys">Keys</option>
                 <option value="ATM">ATM</option>
-                <option value="Instruments">Instruments</option>
-                <option value="Sports">Sports</option>
-                <option value="Tools">Tools</option>
-                <option value="Others">Documents</option>
-                <option value="Documents">Others</option>
+                <option value="Docs">Docs</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Others">Others</option>
               </select>
               {errors.category && <p className="text-red-600 text-xs mt-1">{errors.category}</p>}
             </div>
@@ -252,7 +241,6 @@ const ReportLost = () => {
                 Cancel
               </button>
             </div>
-
           </form>
         </div>
       </div>
