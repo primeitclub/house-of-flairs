@@ -83,7 +83,6 @@ const ReportLost = () => {
           <h2 className="text-3xl font-bold text-red-600 text-center mb-6">Report Lost Item</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category *</label>
               <select
@@ -240,7 +239,6 @@ const ReportLost = () => {
                 Cancel
               </button>
             </div>
-
           </form>
         </div>
       </div>

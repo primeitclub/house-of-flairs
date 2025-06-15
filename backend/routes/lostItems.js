@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const LostItem = require('../models/LostItem');
+const { sendEvidenceEmail } = require('../config/emailConfig');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -84,6 +85,45 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Item deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+// Submit evidence for a lost item
+router.post('/:id/evidence', upload.array('files'), async (req, res) => {
+  try {
+    const item = await LostItem.findById(req.params.id);
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // Extract evidence info
+    const description = req.body.description || '';
+    const files = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+
+    // Create evidence object
+    const evidence = {
+      description,
+      files,
+      submittedAt: new Date()
+    };
+
+    // Add evidence to the item
+    item.evidence.push(evidence);
+
+    // Save the updated item
+    await item.save();
+
+    // Send email notification
+    const emailSent = await sendEvidenceEmail(item, evidence);
+
+    res.json({ 
+      message: 'Evidence submitted successfully',
+      evidence: item.evidence[item.evidence.length - 1],
+      emailSent
+    });
+  } catch (err) {
+    console.error('Error submitting evidence:', err);
+    res.status(500).json({ message: 'Failed to submit evidence' });
   }
 });
 

@@ -15,6 +15,7 @@ const ReportFound = () => {
     category: '',
   });
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -25,7 +26,13 @@ const ReportFound = () => {
   };
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setImage(file);
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      setImagePreview(null);
+    }
   };
 
   const validate = () => {
@@ -69,6 +76,7 @@ const ReportFound = () => {
       navigate('/');
     } catch (err) {
       console.error("Submission error:", err);
+      setErrors({ submit: 'Failed to submit item. Please try again.' });
     } finally {
       setLoading(false);
     }
@@ -82,7 +90,7 @@ const ReportFound = () => {
         <div className="w-full max-w-2xl bg-white shadow-xl rounded-xl p-8">
           <h2 className="text-3xl font-bold text-green-700 text-center mb-6">Report Found Item</h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category *</label>
               <select
@@ -201,25 +209,23 @@ const ReportFound = () => {
             </div>
 
             <div>
-              <label htmlFor="imageUpload" className="block text-sm font-medium text-gray-700">Upload Image (optional)</label>
-              <input
-                type="file"
-                id="imageUpload"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="mt-1 block w-full text-sm text-gray-500
-                           file:mr-4 file:py-2 file:px-4
-                           file:rounded-full file:border-0
-                           file:text-sm file:font-semibold
-                           file:bg-green-50 file:text-green-700
-                           hover:file:bg-green-100"
-              />
-              {image && (
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt="Preview"
-                  className="mt-4 w-40 h-40 object-cover rounded-lg border-2 border-green-300 shadow-md"
-                />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Upload Photo or Document</label>
+              <div className="flex items-center gap-4">
+                <label className="inline-block px-4 py-2 bg-green-600 text-white rounded-md cursor-pointer hover:bg-green-700 transition-colors">
+                  Choose File
+                  <input
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </label>
+                {image && <span className="text-sm text-gray-700">{image.name}</span>}
+              </div>
+              {imagePreview && (
+                <div className="mt-2">
+                  <img src={imagePreview} alt="Preview" className="h-32 rounded shadow" />
+                </div>
               )}
             </div>
 

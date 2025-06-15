@@ -38,6 +38,14 @@ const lostItemSchema = new mongoose.Schema({
   image: {
     type: String
   },
+  evidence: [{
+    description: String,
+    files: [String],
+    submittedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   createdAt: {
     type: Date,
     default: Date.now
