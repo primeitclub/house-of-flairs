@@ -17,12 +17,12 @@ return(
          <div className="flex space-x-4">
   <button className="w-1/3 bg-[#86B049] hover:bg-[#476930] text-white rounded-lg font-semibold py-3">
     <Link to="/report-found" className="block text-center">
-      Found Report
+      I Found Something
     </Link>
   </button>
   <button className="w-1/3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md transition duration-300 ease-in-out py-3">
     <Link to="/report-lost" className="block text-center">
-      Report Lost Item
+      I Lost Something
     </Link>
   </button>
 </div>

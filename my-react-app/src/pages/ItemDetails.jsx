@@ -12,7 +12,8 @@ const ItemDetails = () => {
   const [error, setError] = useState(null);
   const [evidence, setEvidence] = useState({
     description: '',
-    files: []
+    files: [],
+    email: ''
   });
   const [evidencePreview, setEvidencePreview] = useState([]);
   const [evidenceError, setEvidenceError] = useState('');
@@ -80,7 +81,7 @@ const ItemDetails = () => {
       });
       
       setEvidenceSuccess('Evidence submitted successfully');
-      setEvidence({ description: '', files: [] });
+      setEvidence({ description: '', files: [], email: '' });
       setEvidencePreview([]);
       setShowEvidenceModal(true);
       
@@ -213,7 +214,7 @@ const ItemDetails = () => {
                 <form onSubmit={handleEvidenceSubmit} className="space-y-4">
                   <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                      Describe the object you lost, when it was lost, how old it is, and any unique identifiers (e.g., marks, engravings, serial numbers, etc.)
+                      {item.type === 'lost' ? 'Describe the object you found (e.g., marks, engravings, serial numbers, etc.)' : 'Describe the object you lost, when it was lost, how old it is, and any unique identifiers (e.g., marks, engravings, serial numbers, etc.)'}
                     </label>
                     <textarea
                       id="description"
@@ -256,6 +257,18 @@ const ItemDetails = () => {
                     <p className="mt-1 text-sm text-gray-500">
                       Upload any relevant files (receipts, photos, etc.)
                     </p>
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Your Email *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={evidence.email}
+                      onChange={handleEvidenceChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                      placeholder="Enter your email"
+                    />
                   </div>
                   {evidenceError && (
                     <p className="text-red-600 text-sm">{evidenceError}</p>

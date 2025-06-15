@@ -102,16 +102,9 @@ const ReportFound = () => {
               >
                 <option value="">Select category</option>
                 <option value="Vehicles">Vehicles</option>
-                <option value="Personal Items">Personal Items</option>
-                <option value="Clothes">Clothes</option>
-                <option value="Backpacks">Backpacks</option>
-                <option value="Wallets">Wallets</option>
-                <option value="Keys">Keys</option>
                 <option value="ATM">ATM</option>
-                <option value="Instruments">Instruments</option>
-                <option value="Sports">Sports</option>
-                <option value="Tools">Tools</option>
-                <option value="Documents">Documents</option>
+                <option value="Docs">Docs</option>
+                <option value="Electronics">Electronics</option>
                 <option value="Others">Others</option>
               </select>
               {errors.category && <p className="text-green-600 text-xs mt-1">{errors.category}</p>}
